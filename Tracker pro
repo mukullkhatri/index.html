@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPSC CSE 2027 | Strategic Command Center (Nov–Dec 2026)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            slate: {
+              850: '#131c2e',
+              900: '#0f172a',
+              950: '#090d16',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #090d16;
+      color: #e2e8f0;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+    .glass {
+      background: rgba(19, 28, 46, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(99, 102, 241, 0.35);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .custom-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 1.15rem;
+      height: 1.15rem;
+      border: 1.5px solid #475569;
+      border-radius: 0.35rem;
+      background-color: rgba(15, 23, 42, 0.8);
+      cursor: pointer;
+      display: inline-grid;
+      place-content: center;
+      transition: all 0.15s ease-in-out;
+      flex-shrink: 0;
+    }
+    .custom-checkbox:checked {
+      background-color: #6366f1;
+      border-color: #6366f1;
+    }
+    .custom-checkbox:checked::before {
+      content: "";
+      width: 0.65em;
+      height: 0.65em;
+      transform: scale(1);
+      box-shadow: inset 1em 1em white;
+      transform-origin: bottom left;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+    @keyframes pulse-highlight {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+      50% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.65); }
+    }
+    .highlight-flash {
+      animation: pulse-highlight 1.4s ease-in-out 2;
+      border-color: #818cf8 !important;
+    }
+    button {
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-indigo-500 selection:text-white pb-16">
+
+  <!-- TOP NAVIGATION / HEADER -->
+  <header class="sticky top-0 z-40 glass border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-emerald-500 flex items-center justify-center font-mono font-bold text-slate-950 text-lg shadow-lg shadow-indigo-500/20">
+            27
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">UPSC CSE 2027 Command Center</h1>
+              <span class="px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider bg-indigo-500/15 text-indigo-300 rounded-full border border-indigo-500/30">IAS • PubAd</span>
+            </div>
+            <p class="text-xs text-slate-400 font-mono">Phase I Winter Consolidation • 09 Nov – 31 Dec 2026 (53 Days)</p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="btn-jump-today" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white transition flex items-center gap-1.5 shadow-sm">
+            <span>⚡ Jump to Today</span>
+          </button>
+          <button type="button" id="btn-open-routine" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 transition">
+            ⏱️ Daily Architecture
+          </button>
+          <button type="button" id="btn-export" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-emerald-300 border border-slate-700 transition">
+            ↓ Export JSON
+          </button>
+          <label class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-amber-300 border border-slate-700 transition cursor-pointer">
+            ↑ Import
+            <input type="file" id="importFile" class="hidden" accept=".json" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+
+    <!-- ANALYTICS & METRICS BAR (CLICKABLE TO FILTER) -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div data-filter-card="all" class="glass-card rounded-2xl p-4 cursor-pointer" title="Click to view all 53 days">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-mono uppercase text-slate-400">Overall Completion</p>
+            <h3 id="stat-overall-pct" class="text-2xl font-bold text-white mt-1 font-mono">0%</h3>
+          </div>
+          <span class="px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 text-xs font-mono" id="stat-overall-count">0/212 tasks</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+          <div id="bar-overall" class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div data-filter-card="p1" class="glass-card rounded-2xl p-4 cursor-pointer" title="Click to filter PubAd days">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-mono uppercase text-slate-400">PubAd Optional (P1 & P2)</p>
+            <h3 id="stat-pubad-pct" class="text-2xl font-bold text-emerald-400 mt-1 font-mono">0%</h3>
+          </div>
+          <span class="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-xs font-mono" id="stat-pubad-count">0/53 days</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+          <div id="bar-pubad" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div data-filter-card="awfg" class="glass-card rounded-2xl p-4 cursor-pointer" title="Click to filter AWFG Mains Test Days">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-mono uppercase text-slate-400">AWFG Intense (Mains)</p>
+            <h3 id="stat-awfg-pct" class="text-2xl font-bold text-amber-400 mt-1 font-mono">0/12</h3>
+          </div>
+          <span class="px-2 py-1 rounded-md bg-amber-500/10 text-amber-300 text-xs font-mono">Tests #22–#33</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+          <div id="bar-awfg" class="bg-amber-500 h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div data-filter-card="powerup" class="glass-card rounded-2xl p-4 cursor-pointer" title="Click to filter PowerUp CA Test Days">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-mono uppercase text-slate-400">Vajiram PowerUp CA</p>
+            <h3 id="stat-ca-pct" class="text-2xl font-bold text-rose-400 mt-1 font-mono">0/4</h3>
+          </div>
+          <span class="px-2 py-1 rounded-md bg-rose-500/10 text-rose-300 text-xs font-mono">May–Aug '26 CA</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+          <div id="bar-ca" class="bg-rose-500 h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE TEST SERIES MILESTONE STRIP (CLICK ANY TAG TO JUMP TO THAT DATE) -->
+    <section class="glass rounded-2xl p-4 border border-slate-800">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <h2 class="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          Integrated Test Series Checkpoints (Click any tag to jump to that test day)
+        </h2>
+        <span class="text-[11px] text-slate-400 font-mono">Double-Clash Wednesdays: Nov 18 & Dec 2</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+        <div class="bg-slate-900/90 border border-amber-500/20 rounded-xl p-3">
+          <div class="font-semibold text-amber-300 mb-2 flex justify-between">
+            <span>AWFG Intense 2027 (7 Qs / 1 Hr • Mon-Wed-Fri)</span>
+            <span class="font-mono text-[11px] text-amber-400/80">GS4 Ethics + GS1</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 text-[11px] font-mono text-slate-300">
+            <button type="button" data-jump-date="2026-11-11" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">11 Nov: #22 GS4 T3</button>
+            <button type="button" data-jump-date="2026-11-13" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">13 Nov: #23 GS4 T6</button>
+            <button type="button" data-jump-date="2026-11-16" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">16 Nov: #24 GS4 T7</button>
+            <button type="button" data-jump-date="2026-11-18" class="px-2 py-1 rounded bg-amber-950/60 hover:bg-amber-500/30 border border-amber-500/40 text-amber-200 transition">18 Nov: #25 A&C</button>
+            <button type="button" data-jump-date="2026-11-20" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">20 Nov: #26 Mod Hist</button>
+            <button type="button" data-jump-date="2026-11-23" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">23 Nov: #27 World Hist</button>
+            <button type="button" data-jump-date="2026-11-25" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">25 Nov: #28 Post-Ind</button>
+            <button type="button" data-jump-date="2026-11-27" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">27 Nov: #29 Soc-A</button>
+            <button type="button" data-jump-date="2026-11-30" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">30 Nov: #30 Soc-B</button>
+            <button type="button" data-jump-date="2026-12-02" class="px-2 py-1 rounded bg-amber-950/60 hover:bg-amber-500/30 border border-amber-500/40 text-amber-200 transition">02 Dec: #31 Phys Geo-1</button>
+            <button type="button" data-jump-date="2026-12-04" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">04 Dec: #32 Phys Geo-2</button>
+            <button type="button" data-jump-date="2026-12-07" class="px-2 py-1 rounded bg-slate-800 hover:bg-amber-500/20 hover:border-amber-400 border border-slate-700 transition">07 Dec: #33 Hum Geo</button>
+          </div>
+        </div>
+        <div class="bg-slate-900/90 border border-rose-500/20 rounded-xl p-3">
+          <div class="font-semibold text-rose-300 mb-2 flex justify-between">
+            <span>Vajiram PowerUp Current Affairs Batch 3 (Bi-Weekly Wed)</span>
+            <span class="font-mono text-[11px] text-rose-400/80">Prelims GS-I</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] font-mono text-slate-300">
+            <button type="button" data-jump-date="2026-11-18" class="text-left p-2 rounded bg-rose-950/30 hover:bg-rose-500/25 border border-rose-500/30 transition">
+              <span class="text-rose-300 font-bold">18 Nov (CA5501):</span> May 2026 CA
+            </button>
+            <button type="button" data-jump-date="2026-12-02" class="text-left p-2 rounded bg-rose-950/30 hover:bg-rose-500/25 border border-rose-500/30 transition">
+              <span class="text-rose-300 font-bold">02 Dec (CA5502):</span> June 2026 CA
+            </button>
+            <button type="button" data-jump-date="2026-12-16" class="text-left p-2 rounded bg-slate-800/80 hover:bg-rose-500/25 border border-slate-700 hover:border-rose-500/40 transition">
+              <span class="text-rose-300 font-bold">16 Dec (CA5503):</span> July 2026 CA
+            </button>
+            <button type="button" data-jump-date="2026-12-30" class="text-left p-2 rounded bg-slate-800/80 hover:bg-rose-500/25 border border-slate-700 hover:border-rose-500/40 transition">
+              <span class="text-rose-300 font-bold">30 Dec (CA5504):</span> August 2026 CA
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTER & SEARCH CONTROLS -->
+    <section class="glass rounded-2xl p-4 flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+      <div class="flex flex-wrap gap-1.5" id="filter-buttons">
+        <button type="button" data-filter="all" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-600 text-white transition">All 53 Days</button>
+        <button type="button" data-filter="test" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">🔥 Test Days (14)</button>
+        <button type="button" data-filter="awfg" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-amber-300 hover:bg-slate-700 transition">AWFG Mains (12)</button>
+        <button type="button" data-filter="powerup" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-rose-300 hover:bg-slate-700 transition">PowerUp CA (4)</button>
+        <button type="button" data-filter="p1" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-emerald-300 hover:bg-slate-700 transition">PubAd Paper I (24)</button>
+        <button type="button" data-filter="p2" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-cyan-300 hover:bg-slate-700 transition">PubAd Paper II (29)</button>
+        <button type="button" data-filter="pending" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">⏳ Incomplete</button>
+      </div>
+
+      <div class="relative flex-1 max-w-xs">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search Riggs, Art & Culture, CA5502..."
+          class="w-full bg-slate-900/90 border border-slate-700 focus:border-indigo-500 rounded-xl px-3.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 outline-none transition"
+        />
+      </div>
+    </section>
+
+    <!-- ACTIVE FILTER STATUS BANNER -->
+    <div id="filter-status" class="hidden items-center justify-between px-4 py-2 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-xs text-indigo-200 font-mono">
+      <span id="filter-status-text">Showing filtered view</span>
+      <button type="button" id="btn-reset-filter" class="underline hover:text-white">Reset to All 53 Days</button>
+    </div>
+
+    <!-- SCHEDULE GRID -->
+    <section id="schedule-container" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></section>
+
+  </main>
+
+  <!-- DAILY ROUTINE MODAL -->
+  <div id="routineModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card max-w-2xl w-full rounded-2xl p-6 border border-slate-700 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white">Standard Daily Execution Architecture (10.5 Hours)</h3>
+          <p class="text-xs text-slate-400 font-mono">Calibrated for Peak Retention, Answer Writing & Endurance</p>
+        </div>
+        <button type="button" id="btn-close-routine" class="text-slate-400 hover:text-white text-lg font-bold px-2">✕</button>
+      </div>
+      <div class="space-y-2.5 text-xs">
+        <div class="p-3 rounded-xl bg-slate-900/80 border border-emerald-500/20 flex justify-between gap-4">
+          <span class="font-mono text-emerald-400 font-semibold shrink-0">06:30 – 10:00 (3.5h)</span>
+          <span class="text-slate-200"><strong>Slot 1 • PubAd Core Deep Work:</strong> Conceptual study of daily Paper I / Paper II unit, Administrative Thinkers, ARC-II linkages, and 3 Mains PYQ outlines (150/250w).</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/80 border border-indigo-500/20 flex justify-between gap-4">
+          <span class="font-mono text-indigo-400 font-semibold shrink-0">10:45 – 13:15 (2.5h)</span>
+          <span class="text-slate-200"><strong>Slot 2 • GS Static & AWFG Test Alignment:</strong> Revise scheduled AWFG topic (GS4 Ethics / GS1 History-Society-Geo / Post-Dec 7 GS2-GS3) + 1-page WYSK value-addition sheet.</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/80 border border-amber-500/20 flex justify-between gap-4">
+          <span class="font-mono text-amber-400 font-semibold shrink-0">14:30 – 16:00 (1.5h)</span>
+          <span class="text-slate-200"><strong>Slot 3 • High-Intensity Execution:</strong> Write AWFG Test (7 Qs / 60 mins) on Mon/Wed/Fri OR solve 25 Prelims PYQs + 2 Ethics Case Studies on non-test days.</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/80 border border-rose-500/20 flex justify-between gap-4">
+          <span class="font-mono text-rose-400 font-semibold shrink-0">16:30 – 18:30 (2.0h)</span>
+          <span class="text-slate-200"><strong>Slot 4 • PowerUp Current Affairs & PIB/Newspaper:</strong> Monthly CA magazine consolidation (May–Aug 2026) + PowerUp Recall Sheets + Dynamic examples for PubAd Paper II.</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900/80 border border-cyan-500/20 flex justify-between gap-4">
+          <span class="font-mono text-cyan-400 font-semibold shrink-0">20:30 – 21:30 (1.0h)</span>
+          <span class="text-slate-200"><strong>Slot 5 • Night Active Recall & Mistake Log:</strong> Blank-sheet recall of morning PubAd thinkers/articles, update Prelims error log, and set next day's top 3 priorities.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scheduleData = [
+      {
+        id: "2026-11-09", dateStr: "09 Nov 2026", day: "Monday", phase: "PubAd P1 • GS4 Ethics", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 1: Introduction — Meaning, Scope & Significance; Wilson's Dichotomy; Evolution & Status of Discipline.",
+        gs: "GS4 Topic 3 Prep (Foundational Values for Civil Service: Integrity, Impartiality, Non-partisanship, Objectivity).",
+        pyq: "PubAd PYQ: Write 2 answers on 'New Public Administration (Minnowbrook I-III)' & 'Crisis of Identity' + 1 Ethics Case Study.",
+        ca: "May 2026 CA (Part 1: Polity & Governance) + Daily Newspaper/PIB."
+      },
+      {
+        id: "2026-11-10", dateStr: "10 Nov 2026", day: "Tuesday", phase: "PubAd P1 • GS4 Ethics", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 1: Public Choice Approach (Ostrom, Buchanan, Downs); New Public Management (NPM); Good Governance.",
+        gs: "GS4 Topic 3 Consolidation: Dedication to Public Service, Empathy, Tolerance, Compassion towards weaker sections.",
+        pyq: "PubAd PYQ: 'Public Choice vs NPM' (2019/2022) + Revise 15 Administrative Stakeholder Examples for AWFG #22.",
+        ca: "May 2026 CA (Part 2: Economy & Banking) + Prepare short notes for CA5501."
+      },
+      {
+        id: "2026-11-11", dateStr: "11 Nov 2026", day: "Wednesday", phase: "AWFG Test #22 • PubAd P1", pType: "p1",
+        awfg: "AWFG Test #22: GS4 Topic 3 (Aptitude & Foundational Values) + 2 Case Studies [1 Hr]", powerup: null,
+        pubad: "Paper I Unit 2: Administrative Thought — Scientific Management (Taylor) & Classical Theory (Fayol, Gulick, Urwick).",
+        gs: "Attempt AWFG Test #22 under strict 60-min timer + Post-test evaluation & model answer comparison.",
+        pyq: "PubAd PYQ: 'Taylor’s Mental Revolution in Digital Era' + Analyze 2021-23 Ethics PYQs on Objectivity/Compassion.",
+        ca: "May 2026 CA (Part 3: Environment & Ecology — Species, Protected Areas, COP updates)."
+      },
+      {
+        id: "2026-11-12", dateStr: "12 Nov 2026", day: "Thursday", phase: "PubAd P1 • GS4 Ethics", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 2: Max Weber’s Bureaucracy (Ideal Type, Authority, Critique) & Karl Marx (State & Bureaucracy).",
+        gs: "GS4 Topic 6 Prep: Public/Civil Service Values & Ethics in Public Administration (Status, Problems, Ethical Dilemmas).",
+        pyq: "PubAd PYQ: 'Weberian Bureaucracy vs Post-Bureaucratic Model' + Draft 2 frameworks for Ethical Dilemmas.",
+        ca: "May 2026 CA (Part 4: Science & Tech — Space, Biotech, Defence, AI Governance)."
+      },
+      {
+        id: "2026-11-13", dateStr: "13 Nov 2026", day: "Friday", phase: "AWFG Test #23 • PubAd P1", pType: "p1",
+        awfg: "AWFG Test #23: GS4 Topic 6 (Ethics in Public Admin, Accountability, Corp Gov) + 2 Case Studies", powerup: null,
+        pubad: "Paper I Unit 2: Human Relations School (Elton Mayo) & Functions of the Executive (Chester Barnard).",
+        gs: "Attempt AWFG Test #23 (7 Qs / 1 Hr) + Revise Laws, Rules, Regulations & Conscience as sources of ethical guidance.",
+        pyq: "PubAd PYQ: 'Barnard’s Zone of Indifference & Informal Organization' + Link to GS4 Corporate Governance.",
+        ca: "May 2026 CA (Part 5: International Relations, Summits & Reports)."
+      },
+      {
+        id: "2026-11-14", dateStr: "14 Nov 2026", day: "Saturday", phase: "PubAd P1 • GS4 Probity", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 2: Herbert Simon (Bounded Rationality, Decision-Making) & Mary Parker Follett (Constructive Conflict, Power-With).",
+        gs: "GS4 Topic 7 Prep: Probity in Governance, Philosophical Basis, Information Sharing/RTI, Citizen's Charters.",
+        pyq: "PubAd PYQ: 'Simon’s Satisficing Model & AI in Policy' + 'Follett’s Depersonalization of Orders'.",
+        ca: "May 2026 CA (Part 6: Government Schemes, Indices & Places in News)."
+      },
+      {
+        id: "2026-11-15", dateStr: "15 Nov 2026", day: "Sunday", phase: "PubAd P1 • Weekly Synthesis", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 2: Chris Argyris, Rensis Likert (Systems 1-4), Maslow, Herzberg & McGregor.",
+        gs: "GS4 Topic 7 Consolidation: Work Culture, Quality of Service Delivery, Utilization of Public Funds, Challenges of Corruption.",
+        pyq: "Weekly Synthesis: Timed 3-Question Mini-Test on Unit 1 & Unit 2 Thinkers + ARC-II 4th Report (Ethics in Governance) linkage.",
+        ca: "Full Revision of May 2026 CA Notes ahead of Wednesday's PowerUp Test-1."
+      },
+      {
+        id: "2026-11-16", dateStr: "16 Nov 2026", day: "Monday", phase: "AWFG Test #24 • PubAd P1", pType: "p1",
+        awfg: "AWFG Test #24: GS4 Topic 7 (Probity in Governance, RTI, Corruption) + 2 Case Studies [GS4 Finale]", powerup: null,
+        pubad: "Paper I Unit 3: Administrative Behaviour — Decision Making, Communication, Morale, Motivation & Leadership Theories.",
+        gs: "Attempt AWFG Test #24 (1 Hr) + Complete GS4 Ethics Formula/Keyword Handbook.",
+        pyq: "PubAd PYQ: 'Transformational vs Transactional Leadership in Civil Services' + 2020-23 Unit 3 PYQs.",
+        ca: "May 2026 CA Rapid Mock Drill (50 MCQs) + Revise Weak Fact Sheets."
+      },
+      {
+        id: "2026-11-17", dateStr: "17 Nov 2026", day: "Tuesday", phase: "PubAd P1 • GS1 Art & Culture", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 4: Organizations — Theories (Systems, Contingency); Structure & Forms (Ministries, Corporations, Companies, Boards).",
+        gs: "GS1 Topic 1 Revision: Indian Art & Culture (Architecture, Temple Styles, Sculpture, Paintings, Classical Dances & Literature).",
+        pyq: "PubAd PYQ: 'Regulatory Authorities vs Ministries in India' + 30 Prelims PYQs on Art & Culture (2014-2025).",
+        ca: "Final Brush-up of May 2026 Current Affairs for Tomorrow's Double-Test Day."
+      },
+      {
+        id: "2026-11-18", dateStr: "18 Nov 2026", day: "Wednesday", phase: "⚡ DOUBLE TEST DAY • AWFG #25 + CA-1", pType: "p1",
+        awfg: "AWFG Test #25: GS1 Topic 1 [Art and Culture] (7 Qs / 1 Hr)",
+        powerup: "Vajiram PowerUp CA Test-1 (CA5501): May 2026 Current Affairs",
+        pubad: "Paper I Unit 4: Public-Private Partnerships (PPP Models, Vijay Kelkar Committee) & Headquarters-Field Relationships.",
+        gs: "Execute AWFG Test #25 (Mains) + Vajiram CA Test-1 (Prelims) + Log PTR & Knowledge Boxes from CA5501.",
+        pyq: "Analyze Art & Culture Mains PYQs (Chola, Pala, Bhakti/Sufi, Gandhara) + PubAd PPP PYQs.",
+        ca: "Extract 1-Page Recall Sheet from CA Test-1 Explanation Booklet."
+      },
+      {
+        id: "2026-11-19", dateStr: "19 Nov 2026", day: "Thursday", phase: "PubAd P1 • GS1 Modern History", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 5: Accountability & Control — Legislative, Executive and Judicial Control over Administration.",
+        gs: "GS1 Topic 2 Prep: Modern Indian History (1757–1947: British Policies, 1857, Socio-Religious Reforms, Gandhian Phase).",
+        pyq: "PubAd PYQ: 'Decline of Parliamentary Control & Effectiveness of Committees' + 35 Prelims PYQs on Modern History.",
+        ca: "Start June 2026 CA (Part 1: Polity, Constitutional Judgments & Bills)."
+      },
+      {
+        id: "2026-11-20", dateStr: "20 Nov 2026", day: "Friday", phase: "AWFG Test #26 • PubAd P1", pType: "p1",
+        awfg: "AWFG Test #26: GS1 Topic 2 [Modern History] (7 Qs / 1 Hr)", powerup: null,
+        pubad: "Paper I Unit 5: Citizen and Administration; Role of Media, Interest Groups, Voluntary Organizations; Social Audit & RTI.",
+        gs: "Attempt AWFG Test #26 (1 Hr) + Post-Test Value Addition on Personalities, Peasant/Tribal Movements & Women in Freedom Struggle.",
+        pyq: "PubAd PYQ: 'Social Audit as Institutionalized Citizen Oversight (Meghalaya/MGNREGA)' + 2 Modern History PYQs.",
+        ca: "June 2026 CA (Part 2: Economy, Fiscal/Monetary Trends & Infrastructure)."
+      },
+      {
+        id: "2026-11-21", dateStr: "21 Nov 2026", day: "Saturday", phase: "PubAd P1 • GS1 World History", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 6: Administrative Law — Meaning, Scope, Dicey’s Rule of Law, Delegated Legislation & Administrative Tribunals.",
+        gs: "GS1 Topic 4 Prep: World History (Industrial Revolution, American/French/Russian Revolutions, World Wars I & II).",
+        pyq: "PubAd PYQ: 'Tribunalization of Justice (L. Chandra Kumar to Madras Bar Association)' + Delegated Legislation safeguards.",
+        ca: "June 2026 CA (Part 3: Environment, Biodiversity & Climate Finance)."
+      },
+      {
+        id: "2026-11-22", dateStr: "22 Nov 2026", day: "Sunday", phase: "PubAd P1 • GS1 World History", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 7: Comparative Public Administration (CPA) — Riggsian Models (Agraria-Industria, Fused-Prismatic-Diffracted, Bazaar-Canteen).",
+        gs: "GS1 Topic 4 Consolidation: Redrawing of National Boundaries, Colonization, Decolonization, Capitalism, Socialism & Cold War.",
+        pyq: "PubAd PYQ: 'Riggs’ Sala Model & Poly-communalism in Indian Administration' + Ferrel Heady's CPA critique.",
+        ca: "June 2026 CA (Part 4: Science & Tech, Defence Indigenization & Cyber Security)."
+      },
+      {
+        id: "2026-11-23", dateStr: "23 Nov 2026", day: "Monday", phase: "AWFG Test #27 • PubAd P1", pType: "p1",
+        awfg: "AWFG Test #27: GS1 Topic 4 [World History] (7 Qs / 1 Hr)", powerup: null,
+        pubad: "Paper I Unit 8: Development Dynamics — Concept of Development, Changing Profile of Development Administration, Anti-Development Thesis.",
+        gs: "Attempt AWFG Test #27 (1 Hr) + Analyze World History Maps & Timeline triggers.",
+        pyq: "PubAd PYQ: 'Escobar’s Anti-Development Thesis vs Sustainable Development Goals' + Bureaucracy & Development.",
+        ca: "June 2026 CA (Part 5: International Relations, Multilateral Groupings & Mapping)."
+      },
+      {
+        id: "2026-11-24", dateStr: "24 Nov 2026", day: "Tuesday", phase: "PubAd P1 • GS1 Post-Independence", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 8: Strong State vs Market Debate; Impact of Liberalization on Administration; Women and Development (SHG Movement).",
+        gs: "GS1 Topic 3 Prep: Post-Independence Consolidation & Reorganization (Integration of Princely States, Linguistic States, Tribal Policy, Green Rev).",
+        pyq: "PubAd PYQ: 'Self-Help Groups (Lakhpati Didi / NRLM) & Women Empowerment' + 2 Post-Independence Mains PYQs.",
+        ca: "June 2026 CA (Part 6: Reports, Indices & Government Flagship Schemes)."
+      },
+      {
+        id: "2026-11-25", dateStr: "25 Nov 2026", day: "Wednesday", phase: "AWFG Test #28 • PubAd P1", pType: "p1",
+        awfg: "AWFG Test #28: GS1 Topic 3 [Post-Independence India] (7 Qs / 1 Hr)", powerup: null,
+        pubad: "Paper I Unit 9: Personnel Administration — Manpower Planning, Recruitment, Training, Career Advancement, Position Classification.",
+        gs: "Attempt AWFG Test #28 (1 Hr) + Review Post-Independence Emergency, Regional Aspirations & Foreign Policy evolution.",
+        pyq: "PubAd PYQ: 'Mission Karmayogi (iGOT) & Competency-Driven Capacity Building' + Lateral Entry debate.",
+        ca: "Revise CA5501 Error Log + Consolidate June 2026 Prelims Pointers."
+      },
+      {
+        id: "2026-11-26", dateStr: "26 Nov 2026", day: "Thursday", phase: "PubAd P1 • GS1 Indian Society-A", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 9: Performance Appraisal (SPARROW/360-Degree), Pay & Service Conditions, Employer-Employee Relations (Whitleyism), Grievance Redressal.",
+        gs: "GS1 Topic 5a Prep: Salient Features of Indian Society, Diversity of India, Role of Women & Women's Organizations, Population Issues.",
+        pyq: "PubAd PYQ: '360-Degree Appraisal: Objectivity vs Politicization' + Administrative Ethics in Personnel Admin.",
+        ca: "Constitution Day Special: Revise Historical Underpinnings & Major Constitutional Amendments."
+      },
+      {
+        id: "2026-11-27", dateStr: "27 Nov 2026", day: "Friday", phase: "AWFG Test #29 • PubAd P1", pType: "p1",
+        awfg: "AWFG Test #29: GS1 Topic 5a [Indian Society - I] (7 Qs / 1 Hr)", powerup: null,
+        pubad: "Paper I Unit 10: Public Policy — Models of Policy-Making (Incrementalism, Rational, Elite, Group, Institutional, Dror's Optimal Model).",
+        gs: "Attempt AWFG Test #29 (1 Hr) + Enrich Society notes with NFHS-5, Census trends & sociological keywords.",
+        pyq: "PubAd PYQ: 'Lindblom’s Muddling Through vs Dror’s Normative Optimum Model' + Policy Implementation gaps in India.",
+        ca: "June 2026 CA Mock Drill (50 MCQs) + Revise Places in News."
+      },
+      {
+        id: "2026-11-28", dateStr: "28 Nov 2026", day: "Saturday", phase: "PubAd P1 • GS1 Indian Society-B", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 11: Techniques of Administrative Improvement — Organization & Methods (O&M), Work Study, Work Measurement.",
+        gs: "GS1 Topic 5b Prep: Poverty & Developmental Issues, Urbanization (Problems & Remedies), Effects of Globalization on Indian Society.",
+        pyq: "PubAd PYQ: 'Relevance of PERT/CPM & Operations Research in Mega Infrastructure Projects (PM GatiShakti)'.",
+        ca: "Revise June 2026 Economy & Environment Current Affairs."
+      },
+      {
+        id: "2026-11-29", dateStr: "29 Nov 2026", day: "Sunday", phase: "PubAd P1 • GS1 Indian Society-B", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 11: e-Governance and Information Technology; Management Aid Tools (Network Analysis, MIS, PERT, CPM).",
+        gs: "GS1 Topic 5b Consolidation: Social Empowerment, Communalism, Regionalism & Secularism.",
+        pyq: "PubAd PYQ: 'Digital Public Infrastructure (DPI) & e-Governance 2.0: Bridging Digital Divide' + 2 Society PYQs.",
+        ca: "Weekly Synthesis: Revise Units 6–11 of PubAd Paper I."
+      },
+      {
+        id: "2026-11-30", dateStr: "30 Nov 2026", day: "Monday", phase: "AWFG Test #30 • PubAd P1", pType: "p1",
+        awfg: "AWFG Test #30: GS1 Topic 5b [Indian Society - II] (7 Qs / 1 Hr)", powerup: null,
+        pubad: "Paper I Unit 12: Financial Administration — Monetary & Fiscal Policies; Public Borrowings & Public Debt; Budgets (Types & Forms).",
+        gs: "Attempt AWFG Test #30 (1 Hr) + Complete GS1 Society Case Examples & Data Sheet.",
+        pyq: "PubAd PYQ: 'Zero-Base Budgeting vs Outcome Budgeting in Indian Ministries' + Fiscal Federalism linkages.",
+        ca: "Final Revision of June 2026 CA Notes for Wednesday's CA5502."
+      },
+      {
+        id: "2026-12-01", dateStr: "01 Dec 2026", day: "Tuesday", phase: "PubAd P1 Finale • GS1 Phys Geo", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I Unit 12: Budgetary Process; Financial Accountability; Accounts & Audit (CAG vs Parliamentary Control).",
+        gs: "GS1 Topic 6 Prep: Physical Geography Part-I (Geomorphology, Interior of Earth, Plate Tectonics, Volcanoes, Earthquakes, Landforms).",
+        pyq: "PubAd PYQ: 'CAG as Friend, Philosopher & Guide vs Post-Mortem Auditor' [PAPER I FULL REVISION COMPLETE].",
+        ca: "Pre-Test Brush-up of June 2026 CA + Physical Geography Diagrams practice."
+      },
+      {
+        id: "2026-12-02", dateStr: "02 Dec 2026", day: "Wednesday", phase: "⚡ DOUBLE TEST DAY • AWFG #31 + CA-2", pType: "p1",
+        awfg: "AWFG Test #31: GS1 Topic 6 [Physical Geography - I] (7 Qs / 1 Hr)",
+        powerup: "Vajiram PowerUp CA Test-2 (CA5502): June 2026 Current Affairs",
+        pubad: "Paper I Grand Synthesis: 1-Hour Timed Sectional Test on Paper I Thinkers, Public Policy & Financial Admin.",
+        gs: "Execute AWFG Test #31 (Mains) + Vajiram CA Test-2 (Prelims) + Analyze CA5502 Recall Sheet & PTRs.",
+        pyq: "Solve 30 Prelims PYQs on Geomorphology & Climatology + Review AWFG #31 Model Answers.",
+        ca: "Log CA5502 Mistakes & Integrate June Dynamic Examples into PubAd Paper II Notebook."
+      },
+      {
+        id: "2026-12-03", dateStr: "03 Dec 2026", day: "Thursday", phase: "PubAd P2 Launch • GS1 Phys Geo", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 1: Evolution of Indian Administration — Kautilya’s Arthashastra (Saptanga, Rajadharma, Corruption control); Mughal Administration.",
+        gs: "GS1 Topic 8 Prep: Physical Geography Part-II (Climatology, Oceanography, Geophysical Phenomena, Cyclones, El-Nino/IOD, Critical Geographical Features).",
+        pyq: "PubAd PYQ: 'Kautilya’s Yogakshema & Welfare State in Modern India' + Mughal Mansabdari/Jagirdari administrative legacy.",
+        ca: "Start July 2026 CA (Part 1: Polity, Federalism & Governance)."
+      },
+      {
+        id: "2026-12-04", dateStr: "04 Dec 2026", day: "Friday", phase: "AWFG Test #32 • PubAd P2", pType: "p2",
+        awfg: "AWFG Test #32: GS1 Topic 8 [Physical Geography - II] (7 Qs / 1 Hr)", powerup: null,
+        pubad: "Paper II Unit 1: Legacy of British Rule in Politics and Administration — Indianization of Public Services, Revenue Admin, District Admin, Local Self-Govt.",
+        gs: "Attempt AWFG Test #32 (1 Hr) + Draw 10 crisp India/World Maps for Climatology, Ocean Currents & Cryosphere changes.",
+        pyq: "PubAd PYQ: 'Continuity vs Change in Post-1947 Indian Bureaucracy (Steel Frame debate)' + 25 Geography Prelims PYQs.",
+        ca: "July 2026 CA (Part 2: Economy, Budget/Survey Themes, Taxation & Trade)."
+      },
+      {
+        id: "2026-12-05", dateStr: "05 Dec 2026", day: "Saturday", phase: "PubAd P2 • GS1 Human & Econ Geo", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 2: Philosophical and Constitutional Framework of Government — Salient Features & Value Premises; Constitutionalism.",
+        gs: "GS1 Topic 7 Prep: Distribution of Key Natural Resources across the World & India; Factors responsible for Location of Primary, Secondary & Tertiary Industries.",
+        pyq: "PubAd PYQ: 'Constitutional Morality & Transformative Constitutionalism in Indian Administration' (Link with Paper I Unit 6).",
+        ca: "July 2026 CA (Part 3: Environment, Disasters, EIA & Renewable Energy)."
+      },
+      {
+        id: "2026-12-06", dateStr: "06 Dec 2026", day: "Sunday", phase: "PubAd P2 • GS1 Human & Econ Geo", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 2: Political Culture; Bureaucracy and Democracy; Bureaucracy and Development.",
+        gs: "GS1 Topic 7 Consolidation: Critical Minerals, Semiconductor Supply Chains, Agro-Climatic Zones & Industrial Corridors.",
+        pyq: "PubAd PYQ: 'Committed Bureaucracy vs Politically Neutral Competence in India' + 30 Prelims PYQs on Economic Geography.",
+        ca: "July 2026 CA (Part 4: Science & Tech, Quantum, Space & Health)."
+      },
+      {
+        id: "2026-12-07", dateStr: "07 Dec 2026", day: "Monday", phase: "🏁 AWFG FINALE (#33) • PubAd P2", pType: "p2",
+        awfg: "AWFG Test #33: GS1 Topic 7 [Human & Economic Geography] [AWFG Series Complete!]", powerup: null,
+        pubad: "Paper II Unit 3: Public Sector Undertakings (PSUs) — Public Sector in Modern India; Forms of PSUs; Problems of Autonomy, Accountability & Control.",
+        gs: "Attempt AWFG Test #33 (1 Hr) + Full Audit of all 33 AWFG Tests (Identify top 5 weak sub-topics across GS1–GS4).",
+        pyq: "PubAd PYQ: 'Maharatna/Navratna Reforms, National Monetisation Pipeline & Disinvestment Policy' (Link with Paper I Unit 4).",
+        ca: "July 2026 CA (Part 5: International Relations, Neighbourhood & Global South)."
+      },
+      {
+        id: "2026-12-08", dateStr: "08 Dec 2026", day: "Tuesday", phase: "PubAd P2 • GS2 Polity Revision", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 4: Union Government and Administration — Executive, Parliament, Judiciary: Structure, Functions, Work Processes; Recent Trends.",
+        gs: "GS2 Consolidation (Reviewing AWFG #1–#4): Indian Constitution, Historical Underpinnings, Amendments, Basic Structure & Fundamental Rights.",
+        pyq: "PubAd PYQ: 'Judicial Activism vs Judicial Overreach: Impact on Executive Policy-Making' + 35 Prelims PYQs on Polity.",
+        ca: "July 2026 CA (Part 6: Reports, Schemes & Places in News)."
+      },
+      {
+        id: "2026-12-09", dateStr: "09 Dec 2026", day: "Wednesday", phase: "PubAd P2 • GS2 Polity Revision", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 4: Intragovernmental Relations; Cabinet Secretariat; Prime Minister's Office (PMO); Central Secretariat; Ministries and Departments.",
+        gs: "GS2 Consolidation: Parliament & State Legislatures, Functioning, Conduct of Business, Parliamentary Committees & Anti-Defection Law.",
+        pyq: "PubAd PYQ: 'Centralization of Power in PMO vs Cabinet Secretariat: Coordinate or Subordinate?' + Link to Barnard/Simon.",
+        ca: "Revise July 2026 CA Notes (Parts 1–3) + PIB Monthly Summary."
+      },
+      {
+        id: "2026-12-10", dateStr: "10 Dec 2026", day: "Thursday", phase: "PubAd P2 • GS2 Federalism", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 4: Boards, Commissions (Election Commission, UPSC, Finance Commission, NCSC/NCST/NCBC); Attached & Subordinate Offices; Field Organizations.",
+        gs: "GS2 Consolidation: Federal Structure, Centre-State Legislative/Admin/Financial Relations, Inter-State Council, Zonal Councils.",
+        pyq: "PubAd PYQ: '16th Finance Commission & Horizontal/Vertical Fiscal Imbalances' + Constitutional Bodies autonomy.",
+        ca: "Revise July 2026 CA Notes (Parts 4–6) + Practice 40 CA MCQs."
+      },
+      {
+        id: "2026-12-11", dateStr: "11 Dec 2026", day: "Friday", phase: "PubAd P2 • GS3 Economy Link", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 5: Plans and Priorities — Machinery of Planning; Role, Composition and Working of Planning Commission & NITI Aayog.",
+        gs: "GS3 Consolidation (Reviewing AWFG #10–#12): Indian Economy & Issues relating to Planning, Mobilization of Resources, Growth & Employment.",
+        pyq: "PubAd PYQ: 'NITI Aayog as Catalytic Think Tank & Competitive-Cooperative Federalism (Aspirational Blocks Programme)'.",
+        ca: "Consolidate Economic Survey & Union Budget Core Data for Mains intros."
+      },
+      {
+        id: "2026-12-12", dateStr: "12 Dec 2026", day: "Saturday", phase: "PubAd P2 • GS2 State Admin", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 6: State Government and Administration — Union-State Administrative, Legislative and Financial Relations; Role of the Finance Commission.",
+        gs: "GS2 Consolidation: Role of Governor (Articles 163, 200, 356, Punchhi/Sarkaria Commissions), State Executive & High Courts.",
+        pyq: "PubAd PYQ: 'Office of the Governor: Constitutional Sentinel or Partisan Agent?' + 30 Prelims PYQs on State Govt.",
+        ca: "July 2026 CA Full Revision + Recall Sheet preparation for CA5503."
+      },
+      {
+        id: "2026-12-13", dateStr: "13 Dec 2026", day: "Sunday", phase: "PubAd P2 • Weekly Synthesis", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 6: Governor; Chief Minister; Council of Ministers; Chief Secretary; State Secretariat; Directorates.",
+        gs: "Weekly Synthesis: Re-attempt 5 lowest-scoring questions from AWFG GS2 & GS4 Tests.",
+        pyq: "PubAd PYQ: 'Chief Secretary as Kingpin of State Administration & Secretariat vs Directorate Dichotomy'.",
+        ca: "Revise May, June & July 2026 Integrated Prelims Fact-Book."
+      },
+      {
+        id: "2026-12-14", dateStr: "14 Dec 2026", day: "Monday", phase: "PubAd P2 • GS2 Governance", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 7: District Administration since Independence — Changing Role of the Collector; Union-State-Local Relations.",
+        gs: "GS2 Consolidation (Reviewing AWFG #5–#6): Government Policies & Interventions, Welfare Schemes, Vulnerable Sections, NGOs & SHGs.",
+        pyq: "PubAd PYQ: 'District Collector: Overburdened Coordinator or Developmental Catalyst? (ARC-II 15th Report)'.",
+        ca: "Mock Test Practice (50 Questions on July 2026 Current Affairs)."
+      },
+      {
+        id: "2026-12-15", dateStr: "15 Dec 2026", day: "Tuesday", phase: "PubAd P2 • GS3 Internal Security", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 7: Imperatives of Development Management and Law and Order Administration; District Administration and Democratic Decentralization.",
+        gs: "GS3 Consolidation (Reviewing AWFG #17–#18): Linkages between Development and Spread of Extremism, Role of External State & Non-State Actors.",
+        pyq: "PubAd PYQ: 'DRDA Merger with Zila Parishad & Collector vs PRI Interface' + 2 Internal Security PYQs.",
+        ca: "Final Brush-up of July 2026 Current Affairs for Tomorrow's CA5503."
+      },
+      {
+        id: "2026-12-16", dateStr: "16 Dec 2026", day: "Wednesday", phase: "🔥 POWERUP CA TEST-3 • PubAd P2", pType: "p2",
+        awfg: null,
+        powerup: "Vajiram PowerUp CA Test-3 (CA5503): July 2026 Current Affairs",
+        pubad: "Paper II Unit 8: Civil Services — Constitutional Position (Art 309–312); Structure, Recruitment, Training and Capacity Building; Good Governance Initiatives.",
+        gs: "Execute Vajiram CA Test-3 (CA5503) + Deep-dive analysis of Explanation PDF, PTRs & AI Performance Analytics.",
+        pyq: "PubAd PYQ: 'All India Services (AIS): Federal Friction vs National Integration' + Article 311 safeguards.",
+        ca: "Extract 1-Page Recall Sheet from CA5503 Booklet."
+      },
+      {
+        id: "2026-12-17", dateStr: "17 Dec 2026", day: "Thursday", phase: "PubAd P2 • GS2 Civil Services", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 8: Code of Conduct and Discipline; Staff Associations; Political Rights; Grievance Redressal Mechanism; Civil Service Neutrality; Civil Service Activism.",
+        gs: "GS2 Consolidation: Role of Civil Services in a Democracy (Link Paper I Unit 9 + Paper II Unit 8 + GS4 Ethics).",
+        pyq: "PubAd PYQ: 'Civil Service Activism vs Constitutional Anonymity' + Analyze ARC-II 10th Report (Refurbishing Personnel Admin).",
+        ca: "Start August 2026 CA (Part 1: Polity, Judiciary & Governance)."
+      },
+      {
+        id: "2026-12-18", dateStr: "18 Dec 2026", day: "Friday", phase: "PubAd P2 • GS3 Budgeting", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 9: Financial Management — Budget as a Political Instrument; Parliamentary Control of Public Expenditure; Role of Finance Ministry.",
+        gs: "GS3 Consolidation: Government Budgeting, FRBM Act, Fiscal Consolidation, GST Council & Public Debt Management.",
+        pyq: "PubAd PYQ: 'Finance Ministry’s Expenditure Control: Financial Advisers & Integrated Financial Adviser System'.",
+        ca: "August 2026 CA (Part 2: Economy, Agriculture, MSMEs & Banking)."
+      },
+      {
+        id: "2026-12-19", dateStr: "19 Dec 2026", day: "Saturday", phase: "PubAd P2 • Financial Admin", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 9: Monetary and Fiscal Policies; Intergovernmental Fiscal Relations; Accounting Techniques; Audit; Role of Controller General of Accounts (CGA) and CAG.",
+        gs: "Prelims Economy Sprint: Solve 45 PYQs on Fiscal Policy, Money & Banking, Inflation & Balance of Payments (2015–2025).",
+        pyq: "PubAd PYQ: 'Separation of Accounts from Audit (CGA vs CAG) & Social/Performance Auditing in India'.",
+        ca: "August 2026 CA (Part 3: Environment, Wildlife, Ramsar Sites & Climate Treaties)."
+      },
+      {
+        id: "2026-12-20", dateStr: "20 Dec 2026", day: "Sunday", phase: "PubAd P2 • GS3 Agriculture", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 10: Administrative Reforms since Independence — Major Concerns; Important Committees and Commissions (Gorwala, Appleby, ARC-I, Sarkaria, ARC-II).",
+        gs: "GS3 Consolidation (Reviewing AWFG #13–#14): Major Crops, Irrigation, e-Technology for Farmers, Farm Subsidies, MSP, PDS, Food Processing & Land Reforms.",
+        pyq: "PubAd PYQ: 'Why Administrative Reforms Fail at Implementation Stage in India: A Riggsian & Behavioural Analysis'.",
+        ca: "August 2026 CA (Part 4: Science & Tech, Space Missions, Biotech & IPR)."
+      },
+      {
+        id: "2026-12-21", dateStr: "21 Dec 2026", day: "Monday", phase: "PubAd P2 • Reforms & e-Gov", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 10: Reforms in Financial Management and Human Resource Development; Problems of Implementation.",
+        gs: "GS2/GS3 Integration: e-Governance Applications, Models, Successes, Limitations, CPGRAMS & Digital India Architecture.",
+        pyq: "PubAd PYQ: 'Direct Benefit Transfer (JAM Trinity) & PFMS as Structural Administrative Reforms'.",
+        ca: "August 2026 CA (Part 5: International Relations, Bilateral Ties & Geopolitics)."
+      },
+      {
+        id: "2026-12-22", dateStr: "22 Dec 2026", day: "Tuesday", phase: "PubAd P2 • Local Governance (Rural)", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 11: Rural Development — Institutions and Agencies since Independence; Rural Development Programmes: Foci and Strategies.",
+        gs: "GS2 Consolidation: Devolution of Powers and Finances up to Local Levels and Challenges Therein (73rd Amendment).",
+        pyq: "PubAd PYQ: '3Fs (Funds, Functions, Functionaries) in PRIs, PESA Act 1996 & Fifth Schedule Governance'.",
+        ca: "August 2026 CA (Part 6: Government Schemes, Indices & Defence Exercises)."
+      },
+      {
+        id: "2026-12-23", dateStr: "23 Dec 2026", day: "Wednesday", phase: "PubAd P2 • Decentralization & PRIs", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 11: Decentralization and Panchayati Raj; 73rd Constitutional Amendment (ARC-II 6th Report: Local Governance).",
+        gs: "Prelims Polity Sprint: Solve 40 PYQs on Panchayati Raj, Municipalities, Co-operative Societies & Scheduled/Tribal Areas.",
+        pyq: "PubAd PYQ: 'Gram Sabha as Soul of Direct Democracy vs Elite Capture & Proxy Representation (Sarpanch Pati)'.",
+        ca: "Revise August 2026 CA Notes (Parts 1–3) + Prepare Short Pointers."
+      },
+      {
+        id: "2026-12-24", dateStr: "24 Dec 2026", day: "Thursday", phase: "PubAd P2 • Urban Governance", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 12: Urban Local Government — Municipal Governance: Main Features, Structures, Finance and Problem Areas; 74th Constitutional Amendment.",
+        gs: "GS1/GS2 Urbanization Link: Smart Cities Mission, AMRUT 2.0, Swachh Bharat Urban, Municipal Bonds & Metropolitan Planning Committees.",
+        pyq: "PubAd PYQ: '74th Amendment at 30+: Parastatals, Fragmented Authority & Municipal Fiscal Autonomy'.",
+        ca: "Revise August 2026 CA Notes (Parts 4–6) + Practice 40 CA MCQs."
+      },
+      {
+        id: "2026-12-25", dateStr: "25 Dec 2026", day: "Friday", phase: "PubAd P2 • Global-Local Debate", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 12: Global-Local Debate; New Localism; Development Dynamics, Politics and Administration with special reference to City Management.",
+        gs: "GS3 Consolidation (Reviewing AWFG #15–#16): Science & Tech Indigenization + Environment & Conservation (EIA, Coastal Regulation, Carbon Markets).",
+        pyq: "PubAd PYQ: 'New Localism & Directly Elected Mayor Debate in Indian Metropolises'.",
+        ca: "Prelims Environment Sprint: Solve 40 PYQs on Ecology, National Parks & Climate Conventions."
+      },
+      {
+        id: "2026-12-26", dateStr: "26 Dec 2026", day: "Saturday", phase: "PubAd P2 • Law & Order Admin", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 13: Law and Order Administration — British Legacy; National Police Commission; Investigative Agencies (CBI, NIA, ED).",
+        gs: "GS3 Internal Security Link: Police Reforms (Prakash Singh Judgment), Bharatiya Nyaya Sanhita (BNS/BNSS/BSA) Administrative Impact, Cyber Crime & Money Laundering.",
+        pyq: "PubAd PYQ: 'SMART Policing, Separation of Investigation from Law & Order, and Federal Issues in CBI/ED Operations'.",
+        ca: "Consolidate ARC-II 5th Report (Public Order) & Supreme Court Police Reform Directives."
+      },
+      {
+        id: "2026-12-27", dateStr: "27 Dec 2026", day: "Sunday", phase: "PubAd P2 Finale • Significant Issues", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Unit 13 & 14: Role of Central and State Agencies (Paramilitary Forces); Criminalization of Politics; Values in Public Service; Regulatory Commissions; NHRC.",
+        gs: "GS3 Disaster Management Link: NDMA, SDMA, Sendai Framework & Disaster Insurance.",
+        pyq: "PubAd PYQ: 'Citizens’ Administration Interface, Corruption (Lokpal/CVC) & Disaster Management Machinery' [PAPER II COMPLETE].",
+        ca: "Full Revision of August 2026 CA Notes for Wednesday's CA5504."
+      },
+      {
+        id: "2026-12-28", dateStr: "28 Dec 2026", day: "Monday", phase: "PubAd P1+P2 Cross-Linkage Day", pType: "p1",
+        awfg: null, powerup: null,
+        pubad: "Paper I & II Integration Matrix: Build 25 High-Yield Linkages (Taylor-Karmayogi, Simon-NITI, Riggs-PRIs, Weber-Steel Frame, Follett-SHGs, Barnard-PMO).",
+        gs: "GS2 International Relations Revision (Reviewing AWFG #7–#9): India & Neighbourhood, Bilateral Groupings, UN Reforms & Diaspora.",
+        pyq: "Full-Length 3-Hour Timed Simulation: PubAd Paper I Past Year Paper (2024/2025).",
+        ca: "August 2026 CA Rapid Mock Drill (50 MCQs)."
+      },
+      {
+        id: "2026-12-29", dateStr: "29 Dec 2026", day: "Tuesday", phase: "PubAd P2 Full Simulation", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "Paper II Answer Enrichment: Memorize 30 Constitutional Articles, 15 Supreme Court Cases, 12 ARC-II Reports & 20 Best-Practice District Case Studies.",
+        gs: "Prelims Modern History & Polity Rapid Fire (60 PYQs Timed).",
+        pyq: "Full-Length 3-Hour Timed Simulation: PubAd Paper II Past Year Paper (2024/2025).",
+        ca: "Final Brush-up of August 2026 Current Affairs for Tomorrow's CA5504."
+      },
+      {
+        id: "2026-12-30", dateStr: "30 Dec 2026", day: "Wednesday", phase: "🔥 POWERUP CA TEST-4 • Year-End Audit", pType: "p2",
+        awfg: null,
+        powerup: "Vajiram PowerUp CA Test-4 (CA5504): August 2026 Current Affairs",
+        pubad: "Evaluate Paper I & Paper II Simulated Answer Scripts — Check Thinker density, Diagram usage, and Word-limit discipline.",
+        gs: "Execute Vajiram CA Test-4 (CA5504) + Consolidate all 4 PowerUp Recall Sheets (May–August 2026).",
+        pyq: "Analyze Weak Areas across all 4 PowerUp CA Tests (CA5501–CA5504).",
+        ca: "Update Master Current Affairs Digital Notebook with August PTRs."
+      },
+      {
+        id: "2026-12-31", dateStr: "31 Dec 2026", day: "Thursday", phase: "🏆 2026 FINALE & Q1 2027 LAUNCHPAD", pType: "p2",
+        awfg: null, powerup: null,
+        pubad: "PubAd Master Revision: 2-Hour Rapid Flip through Paper I (12 Units) & Paper II (14 Units) Short Notes & Thinker Quote Bank.",
+        gs: "Year-End Grand Review: Audit 100% completion of AWFG Tests #1–#33 & GS1–GS4 WYSK Value-Addition Sheets.",
+        pyq: "Set January–May 2027 Prelims + Mains Integrated Roadmap (Aligning CA5505–CA5515).",
+        ca: "Export Tracker JSON Backup to GitHub Repo & Celebrate 53-Day Winter Streak!"
+      }
+    ];
+
+    const STORAGE_KEY = "upsc_2027_command_tracker_v1";
+    let state = {
+      tasks: {},
+      notes: {},
+      filter: "all"
+    };
+
+    function loadState()
